@@ -1,6 +1,7 @@
 # ETL-Extractor
 Extractor of ETL
 Use following example:
+
     var result = new List<string>();
     var marker = FileMarkerManager.CreateNew(123);
     FileTaker taker = new FileTaker(@"(\r\n|\n)",
