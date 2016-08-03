@@ -67,12 +67,12 @@ namespace Extractor.Extract
 
         public static void Save(FileMarkerManager marker)
         {
-            if (Directory.Exists("aaasaves"))
+            if (!Directory.Exists("aaasaves"))
             {
-                Directory.CreateDirectory("saves");
+                Directory.CreateDirectory("aaasaves");
             }
 
-            string path = "saves/" + marker.Name;
+            string path = "aaasaves/" + marker.Name;
             if (File.Exists(path))
             {
                 File.Delete(path);
@@ -92,7 +92,7 @@ namespace Extractor.Extract
         /// <returns></returns>
         public static FileMarkerManager Load(int markerManagerName)
         {
-            string path = "saves/" + markerManagerName;
+            string path = "aaasaves/" + markerManagerName;
             if (!File.Exists(path))
             {
                 return CreateNew(markerManagerName);

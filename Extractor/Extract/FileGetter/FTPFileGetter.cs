@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Extractor.Extract
 {
@@ -114,50 +112,5 @@ namespace Extractor.Extract
 
             return s.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
         }
-    }
-
-    /// <summary>
-    /// Windows platform based files getter
-    /// </summary>
-    public class WindowsFilesGetter : IFileGetter
-    {
-        public Stream DownLoadFile(string filePath)
-        {
-            return File.OpenRead(filePath);
-        }
-
-        public List<Tuple<DateTime, long, string>> GetFilesDetailInfo(string destination, SearchOption searchOption, string fileExtention = null)
-        {
-            var files = Directory.GetFiles(destination, fileExtention != null ? "*" + fileExtention : "*", searchOption);
-            var res = new List<Tuple<DateTime, long, string>>();
-            foreach (var item in files)
-            {
-                var info = new FileInfo(item);
-                res.Add(new Tuple<DateTime, long, string>(
-                    info.CreationTime,
-                    info.Length,
-                    info.FullName));
-            }
-            return res;
-        }
-    }
-
-    public interface IFileGetter
-    {
-        /// <summary>
-        /// Get files Creation timeStamp, size, and path info of the specified destination.
-        /// </summary>
-        /// <param name="destination">Target site or folder.</param>
-        /// <param name="searchOption">Determin search files whether loop into subdirectories.</param>
-        /// <param name="fileExtention">The file extention which need to transform.</param>
-        /// <returns>List of files with Creation timeStamp, size, and path info.</returns>
-        List<Tuple<DateTime, long, string>> GetFilesDetailInfo(string destination, SearchOption searchOption, string fileExtention = null);
-
-        /// <summary>
-        /// Opening the stream of the target file.
-        /// </summary>
-        /// <param name="filePath">Full path of teh taget file.</param>
-        /// <returns>File stream</returns>
-        Stream DownLoadFile(string filePath);
     }
 }

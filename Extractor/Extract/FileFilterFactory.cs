@@ -14,11 +14,11 @@ namespace Extractor.Extract
             switch (name)
             {
                 case "FileUnitIncreamentation":
-                    res = new FileUnitIncreatationFilter();
+                    res = new FileUnitIncreamentationFilter();
                     break;
                 case "FileRewriteIncreamentation":
                 case "InFileIncreamentation":
-                    res = new InFileIncreatationFilter();
+                    res = new InFileIncreamentationFilter();
                     break;
                 default:
                     throw new ArgumentException(string.Format("could not find specifed filter: {0}", name));
