@@ -11,7 +11,7 @@ namespace Extractor.Extract
     /// <summary>
     /// Filter strategy of FileUnitIncreatation type
     /// </summary>
-    public class FileUnitIncreamentationFilter : IFileFilter
+    public class FileUnitIncreamentationFilter : FileFilterBase
     {
         /// <summary>
         /// Filter our the Increamentation Files details by comparing marker and start time
@@ -20,7 +20,7 @@ namespace Extractor.Extract
         /// <param name="StartTime">date time threshold used to idenfy whether a file is valid and extractable.</param>
         /// <param name="marker">Files marker.</param>
         /// <returns>Extractable files details</returns>
-        public IEnumerable<Tuple<DateTime, long, string>> FilterIncreamentationFileDetails(IEnumerable<Tuple<DateTime, long, string>> filesDetail, DateTime StartTime, FileMarkerManager marker)
+        public override IEnumerable<Tuple<DateTime, long, string>> FilterIncreamentationFileDetails(IEnumerable<Tuple<DateTime, long, string>> filesDetail, DateTime StartTime, FileMarkerManager marker)
         {
             var res = new List<Tuple<DateTime, long, string>>();
             foreach (var detail in filesDetail)
@@ -42,7 +42,7 @@ namespace Extractor.Extract
         /// <param name="splitPattern">splitPattern used by regex.</param>
         /// <param name="applyNewData">User handled code, return true if apply succeed.</param>
         /// <returns>Error log for each file.</returns>
-        public IEnumerable<String> GetFileIncreamentationContentThenApplyData(IEnumerable<Tuple<DateTime, long, string>> filesDetail, IFileGetter getter, FileMarkerManager marker, string splitPattern, Func<IEnumerable<string>, bool> applyNewData)
+        public override IEnumerable<String> GetFileIncreamentationContentThenApplyData(IEnumerable<Tuple<DateTime, long, string>> filesDetail, IFileGetter getter, FileMarkerManager marker, string splitPattern, Func<IEnumerable<string>, bool> applyNewData)
         {
             var errors = new List<string>();
             foreach (var detail in filesDetail)

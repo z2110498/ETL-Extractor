@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extract\FileFilter\FileFilterBase.cs" />
     <Compile Include="Extract\FileFilter\FileUnitIncreamentation.cs" />
     <Compile Include="Extract\FileFilter\InFileIncreamentation.cs" />
     <Compile Include="Extract\FileGetter\AzureBlobStorageFileGetter.cs" />
