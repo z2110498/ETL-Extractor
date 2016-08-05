@@ -77,6 +77,11 @@ namespace Extractor.Extract
             return errors;
         }
 
+        protected override bool NeedToRemoveTheLastOne(Tuple<DateTime, long, string> detail)
+        {
+            return false ;
+        }
+
         /// <summary>
         /// origin is {"aaa","\r\n","bbb","\n","ccc"} 
         /// and splitPatern is {"(\r\n|\n)"}, 

@@ -70,9 +70,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extract\FileFilter\Extension.cs" />
     <Compile Include="Extract\FileFilter\FileFilterBase.cs" />
     <Compile Include="Extract\FileFilter\FileUnitIncreamentation.cs" />
     <Compile Include="Extract\FileFilter\InFileIncreamentation.cs" />
+    <Compile Include="Extract\FileFilter\PatternMatchOption.cs" />
     <Compile Include="Extract\FileGetter\AzureBlobStorageFileGetter.cs" />
     <Compile Include="Extract\FileFilterFactory.cs" />
     <Compile Include="Extract\FileGetter\WindowsFileGetter.cs" />

@@ -65,6 +65,16 @@ namespace Extractor.Extract
             return 0;
         }
 
+        public long GetLastReadSize(string fullPath)
+        {
+            if (Content.ContainsKey(fullPath))
+            {
+                return Content[fullPath].Size;
+            }
+
+            return 0;
+        }
+
         public static void Save(FileMarkerManager marker)
         {
             if (!Directory.Exists("aaasaves"))
