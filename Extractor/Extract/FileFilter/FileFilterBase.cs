@@ -55,7 +55,7 @@ namespace Extractor.Extract
 
                         if (applyNewData(lines))
                         {
-                            marker.Set(detail.Item3, detail.Item1, currentPosition, 0);
+                            marker.Set(detail.Item3, detail.Item1, currentPosition);
                             FileMarkerManager.Save(marker);
                         }
                         else

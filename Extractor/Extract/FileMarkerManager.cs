@@ -26,7 +26,7 @@ namespace Extractor.Extract
 
         public int Name { get; set; }
 
-        public void Set(string fullPath, DateTime creationTime, long size, int splitIndex)
+        public void Set(string fullPath, DateTime creationTime, long size)
         {
             if (Content.ContainsKey(fullPath))
             {
@@ -35,7 +35,6 @@ namespace Extractor.Extract
                     CreationTime = creationTime,
                     FullPath = fullPath,
                     Size = size,
-                    SplitIndex = splitIndex
                 };
             }
             else
@@ -45,24 +44,8 @@ namespace Extractor.Extract
                     CreationTime = creationTime,
                     FullPath = fullPath,
                     Size = size,
-                    SplitIndex = splitIndex
                 });
             }
-        }
-
-        /// <summary>
-        /// Get file split index, return 0 if no record.
-        /// </summary>
-        /// <param name="fullPath"></param>
-        /// <returns></returns>
-        public int GetSplitIndex(string fullPath)
-        {
-            if (Content.ContainsKey(fullPath))
-            {
-                return Content[fullPath].SplitIndex;
-            }
-
-            return 0;
         }
 
         public long GetLastReadSize(string fullPath)
@@ -137,11 +120,6 @@ namespace Extractor.Extract
         /// Full path of the file.
         /// </summary>
         public string FullPath { get; set; }
-
-        /// <summary>
-        /// The count of the split pattern met int the file content.
-        /// </summary>
-        public int SplitIndex { get; set; }
     }
 
 }
