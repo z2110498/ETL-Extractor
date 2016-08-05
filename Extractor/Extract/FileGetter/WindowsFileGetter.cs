@@ -14,7 +14,15 @@ namespace Extractor.Extract
             return File.OpenRead(filePath);
         }
 
-        public List<Tuple<DateTime, long, string>> GetFilesDetailInfo(string destination, SearchOption searchOption, string fileExtention = null)
+        /// <summary>
+        /// Get files Creation timeStamp, size, and path info of the specified destination.
+        /// </summary>
+        /// <param name="destination">Target site or folder.</param>
+        /// <param name="searchOption">Determin search files whether loop into subdirectories.</param>
+        /// <param name="fileExtention">The file extention which need to transform.</param>
+        /// <param name="timeZoneOffset">zone offset base one UTC.</param>
+        /// <returns>List of files with Creation timeStamp, size, and path info.</returns>
+        public List<Tuple<DateTime, long, string>> GetFilesDetailInfo(string destination, SearchOption searchOption, int timeZoneOffset, string fileExtention = null)
         {
             var files = Directory.GetFiles(destination, fileExtention != null ? "*" + fileExtention : "*", searchOption);
             var res = new List<Tuple<DateTime, long, string>>();
@@ -22,7 +30,7 @@ namespace Extractor.Extract
             {
                 var info = new FileInfo(item);
                 res.Add(new Tuple<DateTime, long, string>(
-                    info.CreationTime,
+                    info.CreationTime.AddHours(timeZoneOffset),
                     info.Length,
                     info.FullName));
             }

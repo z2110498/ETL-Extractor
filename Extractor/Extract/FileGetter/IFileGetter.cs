@@ -11,9 +11,10 @@ namespace Extractor.Extract
         /// </summary>
         /// <param name="destination">Target site or folder.</param>
         /// <param name="searchOption">Determin search files whether loop into subdirectories.</param>
+        /// <param name="timeZoneOffset">zone offset base one UTC.</param>
         /// <param name="fileExtention">The file extention which need to transform.</param>
         /// <returns>List of files with Creation timeStamp, size, and path info.</returns>
-        List<Tuple<DateTime, long, string>> GetFilesDetailInfo(string destination, SearchOption searchOption, string fileExtention = null);
+        List<Tuple<DateTime, long, string>> GetFilesDetailInfo(string destination, SearchOption searchOption, int timeZoneOffset, string fileExtention = null);
 
         /// <summary>
         /// Opening the stream of the target file.

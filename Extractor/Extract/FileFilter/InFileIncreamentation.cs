@@ -44,7 +44,7 @@ namespace Extractor.Extract
         protected override bool NeedToRemoveTheLastOne(Tuple<DateTime, long, string> detail)
         {
             // last one need to remove in 12 hours
-            return detail.Item1 - DateTime.Now < new TimeSpan(12, 0, 0);
+            return detail.Item1 - DateTime.UtcNow < new TimeSpan(12, 0, 0);
         }
     }
 

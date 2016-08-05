@@ -42,11 +42,12 @@ namespace Extractor.Extract
         /// <param name="applyExtractedData">User handled code, return true if apply data transform/saveing succeed.</param>
         /// <param name="destination">Resource base path to be extract from</param>
         /// <param name="searchOption">Determin search files whether loop into subdirectories.</param>
+        /// <param name="timeZoneOffset">zone offset base one UTC.</param>
         /// <param name="fileExtention">The file extention which need to transform.</param>
         /// <returns></returns>
-        public IEnumerable<string> ExtractOnce(Func<IEnumerable<string>, bool> applyExtractedData, string destination, SearchOption searchOption, string fileExtension = null)
+        public IEnumerable<string> ExtractOnce(Func<IEnumerable<string>, bool> applyExtractedData, string destination, SearchOption searchOption, int timeZoneOffset, string fileExtension = null)
         {
-            var allFiles = _getter.GetFilesDetailInfo(destination, searchOption, fileExtension);
+            var allFiles = _getter.GetFilesDetailInfo(destination, searchOption, timeZoneOffset, fileExtension);
             var filesDetail = _filter.FilterIncreamentationFileDetails(allFiles, _startDate, _marker);
             var errors = _filter.GetFileIncreamentationContentThenApplyData(filesDetail, _getter, _marker, _splitPattern, applyExtractedData);
 

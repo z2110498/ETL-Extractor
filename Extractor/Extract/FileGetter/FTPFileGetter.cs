@@ -39,18 +39,19 @@ namespace Extractor.Extract
         /// <param name="destination">Target site or folder.</param>
         /// <param name="searchOption">Determin search files whether loop into subdirectories.</param>
         /// <param name="fileExtention">The file extention which need to transform.</param>
+        /// <param name="timeZoneOffset">zone offset base one UTC.</param>
         /// <returns>List of files with Creation timeStamp, size, and path info.</returns>
-        public List<Tuple<DateTime, long, string>> GetFilesDetailInfo(string destination, SearchOption searchOption, string fileExtention = null)
+        public List<Tuple<DateTime, long, string>> GetFilesDetailInfo(string destination, SearchOption searchOption, int timeZoneOffset, string fileExtention = null)
         {
             var listDetail = ListDirectories(destination);
             List<string> dirs;
-            var res = SplitDirAndFiles(destination, listDetail, out dirs, fileExtention);
+            var res = SplitDirAndFiles(destination, listDetail, timeZoneOffset, out dirs, fileExtention);
 
             if (searchOption == SearchOption.AllDirectories)
             {
                 foreach (var item in dirs)
                 {
-                    res.AddRange(GetFilesDetailInfo(Path.Combine(destination, item), SearchOption.AllDirectories, fileExtention));
+                    res.AddRange(GetFilesDetailInfo(Path.Combine(destination, item), SearchOption.AllDirectories, timeZoneOffset, fileExtention));
                 }
             }
 
@@ -64,7 +65,7 @@ namespace Extractor.Extract
         /// <param name="dirs">out put directory list.</param>
         /// <param name="fileExtention">file extention to be filtered.</param>
         /// <returns></returns>
-        private List<Tuple<DateTime, long, string>> SplitDirAndFiles(string baseSite, IEnumerable<string> listDetail, out List<string> dirs, string fileExtention = null)
+        private List<Tuple<DateTime, long, string>> SplitDirAndFiles(string baseSite, IEnumerable<string> listDetail, int timeZoneOffset, out List<string> dirs, string fileExtention = null)
         {
             dirs = new List<string>();
             var res = new List<Tuple<DateTime, long, string>>();
@@ -81,7 +82,7 @@ namespace Extractor.Extract
                     if (fileExtention == null || item.EndsWith(fileExtention))
                     {
                         res.Add(new Tuple<DateTime, long, string>(
-                        Convert.ToDateTime(detail[0] + " " + detail[1]),
+                        Convert.ToDateTime(detail[0] + " " + detail[1]).AddHours(timeZoneOffset),
                         Convert.ToInt64(detail[2]),
                         Path.Combine(baseSite, detail[3])));
                     }

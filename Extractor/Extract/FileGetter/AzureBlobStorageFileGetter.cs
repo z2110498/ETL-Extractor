@@ -21,7 +21,15 @@ namespace Extractor.Extract
             this.Container = container;
         }
 
-        public List<Tuple<DateTime, long, string>> GetFilesDetailInfo(string destination, System.IO.SearchOption searchOption, string fileExtention = null)
+        /// <summary>
+        /// Get files Creation timeStamp, size, and path info of the specified destination.
+        /// </summary>
+        /// <param name="destination">Target site or folder.</param>
+        /// <param name="searchOption">Determin search files whether loop into subdirectories.</param>
+        /// <param name="fileExtention">The file extention which need to transform.</param>
+        /// <param name="timeZoneOffset">zone offset base one UTC.</param>
+        /// <returns>List of files with Creation timeStamp, size, and path info.</returns>
+        public List<Tuple<DateTime, long, string>> GetFilesDetailInfo(string destination, System.IO.SearchOption searchOption, int timeZoneOffset, string fileExtention = null)
         {
             List<Tuple<DateTime, long, string>> fileInfoList = new List<Tuple<DateTime, long, string>>();
 
@@ -35,7 +43,7 @@ namespace Extractor.Extract
             {
                 CloudBlockBlob blob = (CloudBlockBlob)item;
                 if(blob.Name.EndsWith(fileExtention))
-                    fileInfoList.Add(new Tuple<DateTime, long, string>(blob.Properties.LastModified.Value.DateTime, blob.Properties.Length, blob.Name));
+                    fileInfoList.Add(new Tuple<DateTime, long, string>(blob.Properties.LastModified.Value.DateTime.AddHours(timeZoneOffset), blob.Properties.Length, blob.Name));
             }
             return fileInfoList;
         }
@@ -48,10 +56,7 @@ namespace Extractor.Extract
             CloudBlobContainer container = blobClient.GetContainerReference(Container);
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(filePath);
 
-            MemoryStream memStream = new MemoryStream();
-            blockBlob.DownloadToStream(memStream);
-            return memStream;
-
+            return blockBlob.OpenRead();
         }
     }
 }
