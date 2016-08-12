@@ -65,16 +65,19 @@ namespace Extractor.Extract
                                 break;
                             }
 
-                            // record value, remove value from s
+                            // record value, set s to empty
                             //
                             v = match.Value;
-                            s = s.Substring(v.Length);
+                            var lastPart = s.Substring(match.Index + v.Length);
+                            var offset1 = encoding.GetBytes(lastPart).LongLength;
+                            stream.Seek(-offset1, SeekOrigin.Current);
+
+                            s = string.Empty;
                         }
                         // second match
                         //
                         else
                         {
-                            var substring = s.Substring(1000);
                             var offset = encoding.GetBytes(s.Substring(match.Index)).LongLength;
                             stream.Seek(-offset, SeekOrigin.Current);
 

@@ -42,7 +42,7 @@ namespace Extractor.Extract
             foreach (IListBlobItem item in blobs)
             {
                 CloudBlockBlob blob = (CloudBlockBlob)item;
-                if(blob.Name.EndsWith(fileExtention))
+                if(string.IsNullOrEmpty(fileExtention) || blob.Name.EndsWith(fileExtention))
                     fileInfoList.Add(new Tuple<DateTime, long, string>(blob.Properties.LastModified.Value.DateTime.AddHours(timeZoneOffset), blob.Properties.Length, blob.Name));
             }
             return fileInfoList;

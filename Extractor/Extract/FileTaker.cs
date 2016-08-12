@@ -45,7 +45,7 @@ namespace Extractor.Extract
         /// <param name="timeZoneOffset">zone offset base one UTC.</param>
         /// <param name="fileExtention">The file extention which need to transform.</param>
         /// <returns></returns>
-        public IEnumerable<string> ExtractOnce(Func<IEnumerable<string>, bool> applyExtractedData, string destination, SearchOption searchOption, int timeZoneOffset, string fileExtension = null)
+        public IEnumerable<string> ExtractOnce(Func<IEnumerable<string>, string, bool> applyExtractedData, string destination, SearchOption searchOption, int timeZoneOffset, string fileExtension = null)
         {
             var allFiles = _getter.GetFilesDetailInfo(destination, searchOption, timeZoneOffset, fileExtension);
             var filesDetail = _filter.FilterIncreamentationFileDetails(allFiles, _startDate, _marker);
