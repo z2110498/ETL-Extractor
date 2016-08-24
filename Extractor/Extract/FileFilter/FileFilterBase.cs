@@ -27,7 +27,7 @@ namespace Extractor.Extract
         /// <param name="splitPattern">splitPattern used by regex.</param>
         /// <param name="applyNewData">User handled code, return true if apply succeed.</param>
         /// <returns>Error log for each file.</returns>
-        public virtual IEnumerable<string> GetFileIncreamentationContentThenApplyData(IEnumerable<Tuple<DateTime, long, string>> filesDetail, IFileGetter getter, FileMarkerManager marker, string splitPattern, Func<IEnumerable<string>, string, bool> applyNewData)
+        public virtual IEnumerable<string> GetFileIncreamentationContentThenApplyData(IEnumerable<Tuple<DateTime, long, string>> filesDetail, IFileGetter getter, FileMarkerManager marker, string splitPattern, Func<IEnumerable<string>, Tuple<DateTime, long, string>, bool> applyNewData)
         {
             var errors = new List<string>();
             foreach (var detail in filesDetail)
@@ -53,7 +53,7 @@ namespace Extractor.Extract
                             }
                         }
 
-                        if (applyNewData(lines, detail.Item3))
+                        if (applyNewData(lines, detail))
                         {
                             marker.Set(detail.Item3, detail.Item1, currentPosition);
                             FileMarkerManager.Save(marker);

@@ -22,6 +22,14 @@ namespace Extractor.Extract
             this.Content = new Dictionary<string, FileMarker>();
         }
 
+        private FileMarkerManager()
+        {
+
+        }
+
+        /// <summary>
+        /// File markers
+        /// </summary>
         public Dictionary<string, FileMarker> Content { get; set; }
 
         public int Name { get; set; }

@@ -30,6 +30,6 @@ namespace Extractor.Extract
         /// <param name="splitPattern">splitPattern used by regex.</param>
         /// <param name="applyNewData">User handled code, return true if apply succeed.</param>
         /// <returns>Error log for each file.</returns>
-        IEnumerable<String> GetFileIncreamentationContentThenApplyData(IEnumerable<Tuple<DateTime, long, string>> filesDetail, IFileGetter getter, FileMarkerManager marker, string splitPattern, Func<IEnumerable<string>, string, bool> applyNewData);
+        IEnumerable<String> GetFileIncreamentationContentThenApplyData(IEnumerable<Tuple<DateTime, long, string>> filesDetail, IFileGetter getter, FileMarkerManager marker, string splitPattern, Func<IEnumerable<string>, Tuple<DateTime, long, string>, bool> applyNewData);
     }
 }

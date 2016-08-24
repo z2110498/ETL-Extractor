@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Extractor.Extract
 {
-    public static class Extension
+    internal static class Extension
     {
         /// <summary>
         /// Read the next specified unit whcih split by pattern
