@@ -32,8 +32,17 @@ namespace Extractor.Extract
         /// </summary>
         public Dictionary<string, FileMarker> Content { get; set; }
 
+        /// <summary>
+        /// Name of the marker manager
+        /// </summary>
         public int Name { get; set; }
 
+        /// <summary>
+        /// Mark a new file or reset the marker of the exist file 
+        /// </summary>
+        /// <param name="fullPath"></param>
+        /// <param name="creationTime"></param>
+        /// <param name="size"></param>
         public void Set(string fullPath, DateTime creationTime, long size)
         {
             if (Content.ContainsKey(fullPath))
@@ -56,6 +65,11 @@ namespace Extractor.Extract
             }
         }
 
+        /// <summary>
+        /// Get the file size last time, return 0 if the file is not marked.
+        /// </summary>
+        /// <param name="fullPath"></param>
+        /// <returns></returns>
         public long GetLastReadSize(string fullPath)
         {
             if (Content.ContainsKey(fullPath))
@@ -66,6 +80,10 @@ namespace Extractor.Extract
             return 0;
         }
 
+        /// <summary>
+        /// Save the file marker manager.
+        /// </summary>
+        /// <param name="marker"></param>
         public static void Save(FileMarkerManager marker)
         {
             if (!Directory.Exists("aaasaves"))
@@ -80,14 +98,27 @@ namespace Extractor.Extract
             }
 
             using (StreamWriter writer = new StreamWriter(
-                File.Open(path, FileMode.OpenOrCreate, FileAccess.Write)))
+                File.Open(path, FileMode.OpenOrCreate, FileAccess.Write), System.Text.Encoding.UTF8))
+            {
+                writer.Write(Newtonsoft.Json.JsonConvert.SerializeObject(marker));
+            }
+
+            // add mirror file to avoid last all datas when crashing during saving.
+            //
+            if(!File.Exists(path + "_mirror"))
+            {
+                using (File.Create(path + "_mirror")) { }
+            }
+
+            using (StreamWriter writer = new StreamWriter(
+                File.Open(path + "_mirror", FileMode.Truncate, FileAccess.Write), System.Text.Encoding.UTF8))
             {
                 writer.Write(Newtonsoft.Json.JsonConvert.SerializeObject(marker));
             }
         }
 
         /// <summary>
-        /// Load FileMarkerManager from local folder
+        /// Load FileMarkerManager from local folder.
         /// </summary>
         /// <param name="markerManagerName">Name used to identify saved filename.</param>
         /// <returns></returns>
@@ -106,12 +137,20 @@ namespace Extractor.Extract
             }
         }
 
+        /// <summary>
+        /// Generate a new <see cref="FileMarkerManager"/>.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static FileMarkerManager CreateNew(int name)
         {
             return new FileMarkerManager(name);
         }
     }
 
+    /// <summary>
+    /// File marker to mark the file's creation date, size, and full path.
+    /// </summary>
     public class FileMarker
     {
         /// <summary>

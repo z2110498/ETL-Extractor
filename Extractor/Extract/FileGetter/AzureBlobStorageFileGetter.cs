@@ -11,9 +11,19 @@ using System.Configuration;
 
 namespace Extractor.Extract
 {
+    /// <summary>
+    /// File Getter for Azure Blob Storage.
+    /// </summary>
     public class AzureBlobStorageFileGetter : IFileGetter
     {
         string StorageName, StorageKey, Container;
+
+        /// <summary>
+        /// Constructor of the <see cref="AzureBlobStorageFileGetter"/>
+        /// </summary>
+        /// <param name="storageName"></param>
+        /// <param name="storageKey"></param>
+        /// <param name="container"></param>
         public AzureBlobStorageFileGetter(string storageName, string storageKey, string container)
         {
             this.StorageName = storageName;
@@ -46,6 +56,11 @@ namespace Extractor.Extract
             return fileInfoList;
         }
 
+        /// <summary>
+        /// Download target blob file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public System.IO.Stream DownLoadFile(string filePath)
         {
             var container = GetContainer(Container);

@@ -41,6 +41,11 @@ namespace Extractor.Extract
             return res;
         }
 
+        /// <summary>
+        /// If the server do not wirte item completely, the last item need to remove.
+        /// </summary>
+        /// <param name="detail">Marked file detail</param>
+        /// <returns></returns>
         protected override bool NeedToRemoveTheLastOne(Tuple<DateTime, long, string> detail)
         {
             // last one need to remove in 12 hours

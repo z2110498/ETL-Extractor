@@ -12,6 +12,12 @@ namespace Extractor.Extract
     public class FTPFileGetter : IFileGetter
     {
         string _account, _psw;
+
+        /// <summary>
+        /// Constructor of the <see cref="FTPFileGetter"/>
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="password"></param>
         public FTPFileGetter(string account, string password)
         {
             _account = account;
@@ -61,7 +67,9 @@ namespace Extractor.Extract
         /// <summary>
         /// Parse FTP ListDirectoryDetails returns, then return directory list and file detail list
         /// </summary>
+        /// <param name="baseSite">Base site fo the FTP files.</param>
         /// <param name="listDetail">FTP ListDirectoryDetails returns, which are mixed files and directories.</param>
+        /// <param name="timeZoneOffset">time Zone Offset of the FTP server.</param>
         /// <param name="dirs">out put directory list.</param>
         /// <param name="fileExtention">file extention to be filtered.</param>
         /// <returns></returns>

@@ -26,7 +26,6 @@ namespace Extractor.Extract
         /// <param name="filter">Filter increamentation files and contents</param>
         /// <param name="marker">handle file and content markers, saved in local folder</param>
         /// <param name="startTime">date time threshold used to idenfy whether a file is valid and extractable.</param>
-        /// <param name="applyExtractedData"></param>
         public FileTaker(string splitPattern, IFileGetter getter, IFileFilter filter, FileMarkerManager marker, DateTime startTime)
         {
             _getter = getter;
@@ -72,6 +71,9 @@ namespace Extractor.Extract
         Folder
     }
 
+    /// <summary>
+    /// File increamentation type writtern by server.
+    /// </summary>
     public enum IncreamentationType
     {
         /// <summary>

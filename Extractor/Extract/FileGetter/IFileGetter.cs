@@ -4,6 +4,9 @@ using System.IO;
 
 namespace Extractor.Extract
 {
+    /// <summary>
+    /// Getter to get files.
+    /// </summary>
     public interface IFileGetter
     {
         /// <summary>

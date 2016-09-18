@@ -33,6 +33,11 @@ namespace Extractor.Extract
             return res;
         }
 
+        /// <summary>
+        /// If the server do not wirte item completely, the last item need to remove. No need! this time.
+        /// </summary>
+        /// <param name="detail">Marked file detail</param>
+        /// <returns></returns>
         protected override bool NeedToRemoveTheLastOne(Tuple<DateTime, long, string> detail)
         {
             return false ;

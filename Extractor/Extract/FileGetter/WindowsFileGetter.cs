@@ -9,6 +9,11 @@ namespace Extractor.Extract
     /// </summary>
     public class WindowsFilesGetter : IFileGetter
     {
+        /// <summary>
+        /// Download the target file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public Stream DownLoadFile(string filePath)
         {
             return File.OpenRead(filePath);

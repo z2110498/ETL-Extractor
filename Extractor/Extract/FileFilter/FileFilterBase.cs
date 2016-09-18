@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Extractor.Extract
 {
+    /// <summary>
+    /// Base file filter.
+    /// </summary>
     public abstract class FileFilterBase : IFileFilter
     {
         /// <summary>
@@ -40,8 +43,12 @@ namespace Extractor.Extract
                         long currentPosition;
                         var stream = getter.DownLoadFile(detail.Item3);
                         var lastReadSize = marker.GetLastReadSize(detail.Item3);
-                        var lines = GetLinesBaseOnLimitedMemorySize(stream, lastReadSize, splitPattern, out currentPosition, out endOfStream);
+                        if(lastReadSize >= stream.Length)
+                        {
+                            break;
+                        }
 
+                        var lines = GetLinesBaseOnLimitedMemorySize(stream, lastReadSize, splitPattern, out currentPosition, out endOfStream);
                         if (endOfStream && NeedToRemoveTheLastOne(detail))
                         {
                             // Remove last one, reset size/position
@@ -76,8 +83,22 @@ namespace Extractor.Extract
             return errors;
         }
 
+        /// <summary>
+        /// If the server do not wirte item completely, the last item need to remove.
+        /// </summary>
+        /// <param name="detail"></param>
+        /// <returns></returns>
         protected abstract bool NeedToRemoveTheLastOne(Tuple<DateTime, long, string> detail);
 
+        /// <summary>
+        /// Read form stream and do not read too much to avoid OutOffMemory exception.
+        /// </summary>
+        /// <param name="stream">stream to be read.</param>
+        /// <param name="startPosition">position to start from.</param>
+        /// <param name="splitPattern">item pattern which will match as start.</param>
+        /// <param name="currentPosition">position of the stream after reading.</param>
+        /// <param name="endOfStream">Whether is the end of the stream after reading.</param>
+        /// <returns></returns>
         protected virtual List<string> GetLinesBaseOnLimitedMemorySize(Stream stream, long startPosition, string splitPattern, out long currentPosition, out bool endOfStream)
         {
             var res = new List<string>();
