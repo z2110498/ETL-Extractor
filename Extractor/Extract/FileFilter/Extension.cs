@@ -20,16 +20,15 @@ namespace Extractor.Extract
         /// <returns>the unit which is first met or others when on such unit</returns>
         public static string ReadUnit(this Stream stream, string pattern, Encoding encoding, PatternMatchOption matchAsStartOrEnd)
         {
-            var c = 0;
             var v = string.Empty;
             var s = string.Empty;
             var x = new Regex(pattern);
 
             do
             {
-                var buffer = new byte[1024];
-                c = stream.Read(buffer, 0, buffer.Length);
-                s += encoding.GetString(buffer, 0, c);
+                // Fix bug #15
+                //
+                s += stream.ReadStream(encoding);
 
                 if (x.IsMatch(s))
                 {
@@ -65,7 +64,7 @@ namespace Extractor.Extract
                                 break;
                             }
 
-                            // record value, set s to empty
+                            // record value, set s to empty, match.Index = 0, buffer must only read once
                             //
                             v = match.Value;
                             var lastPart = s.Substring(match.Index + v.Length);
@@ -86,16 +85,21 @@ namespace Extractor.Extract
                         }
                     }
                 }
-
-                // when s is not match the pattern, I don't want the match method cost too much
-                // the cost is input too large.
-                // the cost may be split pattern not good enough
-                // TODO: But I don't know how to do.....
+                // not match
+                //
+                else
+                {
+                    // if more than 100M are read, and still not match, 
+                    // thow directly to avoid OutOffMemory exception. 
+                    //
+                    if(encoding.GetByteCount(s) > 100000000)
+                    {
+                        throw new Exception("Could not match Pattern: " + pattern);
+                    }
+                }
 
             }
-            // if c==0, this is the end of stream
-            //
-            while (c != 0);
+            while (!stream.EndOfStream());
 
             if (matchAsStartOrEnd == PatternMatchOption.MatchAsEnd)
             {
@@ -103,6 +107,40 @@ namespace Extractor.Extract
             }
 
             return v + s;
+        }
+
+        /// <summary>
+        /// Read stream and encoding the bytes to valid string.
+        /// </summary>
+        /// <param name="stream">stream to be read</param>
+        /// <param name="encoding">Retruned string endoding</param>
+        /// <returns></returns>
+        public static string ReadStream(this Stream stream, Encoding encoding)
+        {
+            var s = string.Empty;
+            var c = 0;
+            var i = 1024;
+            var buffer = new byte[i];
+            c = stream.Read(buffer, 0, buffer.Length);
+            s = encoding.GetString(buffer, 0, c);
+
+            while(s[s.Length -1] == '�')
+            {
+                var b = stream.ReadByte();
+                if(b == -1)
+                {
+                    break;
+                }
+
+                var temp = new byte[++i];
+                buffer.CopyTo(temp, 0);
+                temp[i - 1] = (byte)b;
+                buffer = temp;
+
+                s = encoding.GetString(buffer, 0, i);
+            }
+
+            return s;
         }
 
         public static bool EndOfStream(this Stream stream)
